@@ -20,7 +20,9 @@ export function LoginModal({ onJoin }: LoginModalProps) {
         <h2 className="text-2xl font-bold mb-4">Join UniBoard Lite</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Display Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Display Name
+            </label>
             <input
               type="text"
               id="name"

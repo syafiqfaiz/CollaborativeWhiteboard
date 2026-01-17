@@ -15,26 +15,30 @@ The system relies on Supabase Realtime as a message broker and utilizes a Peer-t
 ## Setup & Installation
 
 1.  **Clone the repository:**
+
     ```bash
     git clone <repository-url>
     cd uniboard-lite
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3.  **Environment Configuration:**
     Copy the example environment file:
+
     ```bash
     cp .env.example .env
     ```
-    Open `.env` and populate it with your Supabase credentials:
-    -   `VITE_SUPABASE_URL`: Your Supabase Project URL.
-    -   `VITE_SUPABASE_KEY`: Your Supabase Anon Public Key.
 
-    *Note: You need to enable "Broadcast" and "Presence" in your Supabase project settings.*
+    Open `.env` and populate it with your Supabase credentials:
+    - `VITE_SUPABASE_URL`: Your Supabase Project URL.
+    - `VITE_SUPABASE_KEY`: Your Supabase Anon Public Key.
+
+    _Note: You need to enable "Broadcast" and "Presence" in your Supabase project settings._
 
 ## Running Development Server
 

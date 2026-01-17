@@ -2,6 +2,7 @@ import { useWhiteboard } from './hooks/useWhiteboard';
 import { Canvas } from './components/Canvas';
 import { Toolbar } from './components/Toolbar';
 import { LoginModal } from './components/LoginModal';
+import { UserList } from './components/UserList';
 
 function App() {
   const {
@@ -15,6 +16,7 @@ function App() {
     endDrawing,
     setTool,
     setDisplayName,
+    activeUsers,
   } = useWhiteboard();
 
   if (!currentUser.name) {
@@ -33,6 +35,7 @@ function App() {
         moveCursor={moveCursor}
       />
       <Toolbar currentUser={currentUser} setTool={setTool} />
+      <UserList users={activeUsers} />
     </div>
   );
 }

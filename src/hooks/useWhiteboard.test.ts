@@ -3,23 +3,25 @@ import { renderHook, act } from '@testing-library/react';
 import { useWhiteboard } from './useWhiteboard';
 
 const { mockChannel } = vi.hoisted(() => {
-    const channel: any = {
-        on: vi.fn(),
-        subscribe: vi.fn(),
-        send: vi.fn(),
-        track: vi.fn(),
-        presenceState: vi.fn().mockReturnValue({}),
-    };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const channel: any = {
+    on: vi.fn(),
+    subscribe: vi.fn(),
+    send: vi.fn(),
+    track: vi.fn(),
+    presenceState: vi.fn().mockReturnValue({}),
+  };
 
-    channel.on.mockReturnValue(channel);
-    // subscribe can return a subscription object, or undefined in older versions,
-    // but typically it returns Subscription. My code checks status in callback.
-    channel.subscribe.mockImplementation((cb: any) => {
-        if (cb) cb('SUBSCRIBED');
-        return { unsubscribe: vi.fn() };
-    });
+  channel.on.mockReturnValue(channel);
+  // subscribe can return a subscription object, or undefined in older versions,
+  // but typically it returns Subscription. My code checks status in callback.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  channel.subscribe.mockImplementation((cb: any) => {
+    if (cb) cb('SUBSCRIBED');
+    return { unsubscribe: vi.fn() };
+  });
 
-    return { mockChannel: channel };
+  return { mockChannel: channel };
 });
 
 vi.mock('../lib/supabase', () => ({
@@ -74,25 +76,27 @@ describe('useWhiteboard', () => {
     expect(result.current.strokes).toHaveLength(1);
     expect(result.current.currentStroke).toBeNull();
     // Check if broadcast was sent
-    expect(mockChannel.send).toHaveBeenCalledWith(expect.objectContaining({
-        event: 'draw-line'
-    }));
+    expect(mockChannel.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'draw-line',
+      }),
+    );
   });
 
   it('should set display name', () => {
-      const { result } = renderHook(() => useWhiteboard());
-      act(() => {
-          result.current.setDisplayName('Alice');
-      });
-      expect(result.current.currentUser.name).toBe('Alice');
+    const { result } = renderHook(() => useWhiteboard());
+    act(() => {
+      result.current.setDisplayName('Alice');
+    });
+    expect(result.current.currentUser.name).toBe('Alice');
   });
 
   it('should update tool', () => {
-      const { result } = renderHook(() => useWhiteboard());
-      act(() => {
-          result.current.setTool('#FF0000', 10);
-      });
-      expect(result.current.currentUser.color).toBe('#FF0000');
-      expect(result.current.currentUser.width).toBe(10);
+    const { result } = renderHook(() => useWhiteboard());
+    act(() => {
+      result.current.setTool('#FF0000', 10);
+    });
+    expect(result.current.currentUser.color).toBe('#FF0000');
+    expect(result.current.currentUser.width).toBe(10);
   });
 });

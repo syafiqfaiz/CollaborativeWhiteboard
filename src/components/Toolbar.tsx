@@ -29,7 +29,7 @@ export function Toolbar({ currentUser, setTool }: ToolbarProps) {
           title={tool.label}
         >
           {tool.color === COLORS.ERASER && (
-             <span className="text-xs font-bold text-gray-500">Eraser</span>
+            <span className="text-xs font-bold text-gray-500">Eraser</span>
           )}
         </button>
       ))}
