@@ -1,73 +1,68 @@
-# React + TypeScript + Vite
+# UniBoard Lite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+UniBoard Lite is a minimal collaborative whiteboard designed to teach realtime architecture concepts without backend complexity. It allows multiple anonymous users to draw on a shared canvas using an ephemeral, stateless architecture.
 
-Currently, two official plugins are available:
+The system relies on Supabase Realtime as a message broker and utilizes a Peer-to-Peer "Handshake" for state synchronization, eliminating the need for a persistent database.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Anonymous Access**: Join simply by entering a display name.
+- **Real-time Collaboration**: Live drawing and cursor tracking.
+- **P2P State Sync**: The "oldest" user in the room acts as the host to sync state to new users.
+- **Tools**: Pen (Black, Red, Blue, Green) and Eraser.
+- **Stateless Architecture**: No database persistence; all state is ephemeral to the session.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Setup & Installation
 
-## Expanding the ESLint configuration
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd uniboard-lite
+    ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+3.  **Environment Configuration:**
+    Copy the example environment file:
+    ```bash
+    cp .env.example .env
+    ```
+    Open `.env` and populate it with your Supabase credentials:
+    -   `VITE_SUPABASE_URL`: Your Supabase Project URL.
+    -   `VITE_SUPABASE_KEY`: Your Supabase Anon Public Key.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+    *Note: You need to enable "Broadcast" and "Presence" in your Supabase project settings.*
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Running Development Server
+
+To start the local development server:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open your browser to `http://localhost:5173`. Open multiple tabs or windows to simulate multiple users.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Testing
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To run the unit tests:
+
+```bash
+npm test
 ```
+
+## Deployment
+
+To build the application for production:
+
+```bash
+npm run build
+```
+
+This will generate static assets in the `dist` folder, which can be deployed to any static site host (e.g., Vercel, Netlify, GitHub Pages, or an S3 bucket).
+
+**Deployment Note:**
+Ensure that your production environment also has the `VITE_SUPABASE_URL` and `VITE_SUPABASE_KEY` environment variables set.
