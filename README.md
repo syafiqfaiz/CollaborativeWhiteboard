@@ -58,6 +58,31 @@ To run the unit tests:
 npm test
 ```
 
+## Network Events
+
+The application uses Supabase Realtime for real-time collaboration. Below are all network events:
+
+### Broadcast Events
+
+| Event | Payload | Trigger | Use Case |
+|-------|---------|---------|----------|
+| `cursor-move` | `{id: string, x: number, y: number, name: string}` | Mouse movement (throttled 50ms) | Real-time cursor tracking with name tags |
+| `draw-line` | `{id: string, userId: string, color: string, width: number, points: Point[]}` | Mouse up (stroke completion) | Broadcast completed strokes to all peers |
+| `req-state` | `{requesterId: string}` | New user joins room with existing users | Request full canvas state from peers |
+| `sync-state` | `{strokes: Stroke[]}` | Host responds to `req-state` | Send complete canvas history to new user |
+
+### Presence Events
+
+| Event | Tracked Data | Trigger | Use Case |
+|-------|--------------|---------|----------|
+| `presence:sync` | `{online_at: string, user_id: string, name: string}` | User join/leave/name update | Active user list, host selection, automatic cleanup |
+
+**Architecture Notes:**
+- **Atomic Updates**: Strokes are sent only after completion (not streamed point-by-point)
+- **P2P Handshake**: The oldest user (by `online_at` timestamp) acts as the host for state sync
+- **Append-Only**: No deletion events; eraser uses white strokes (#FFFFFF)
+- **Last Write Wins**: Strokes appear in order received
+
 ## Deployment
 
 To build the application for production:
